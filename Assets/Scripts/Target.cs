@@ -54,25 +54,35 @@ public class Target : MonoBehaviour
     {
         return new Vector3(Random.Range(-xRange, xRange), ySpawnPos, 0);
     }
-    private void OnMouseDown()
+    //private void OnMouseDown()
+    //{
+    //    if (gameManager.isGameActive)
+    //    {
+    //        Destroy(gameObject);
+    //        Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
+    //        gameManager.UpdateScore(pointValue);
+    //    }
+    //}
+    private void OnTriggerEnter(Collider other)
+    {       
+        if (gameObject.CompareTag("Bad") && other.gameObject.CompareTag("Swiper"))
+        {
+            Destroy(gameObject);
+            gameManager.UpdateScore(pointValue); 
+            gameManager.UpdateLives(-1);
+        }
+        if (!gameObject.CompareTag("Bad") && other.gameObject.CompareTag("Swiper"))
+        {
+            DestroyTarget();
+        }
+    }
+    public void DestroyTarget()
     {
         if (gameManager.isGameActive)
         {
             Destroy(gameObject);
             Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
             gameManager.UpdateScore(pointValue);
-        }
-    }
-    private void OnTriggerEnter(Collider other)
-    {       
-        if (!gameObject.CompareTag("Bad") && !other.gameObject.CompareTag("Bad"))
-        {
-            
-        }
-        else
-        {
-            Destroy(gameObject);
-            gameManager.GameOver();
         }
     }
 }
